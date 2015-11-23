@@ -14,8 +14,7 @@
     (map (fn [id] [id (get this id)]) arr))
   (last [this]
     (let [id (last arr)]
-      (when id [id (get this id)]))))
-
+      (when id (get this id)))))
 
 (defn cache [size]
   (Cache. #js [] (atom {}) size))
