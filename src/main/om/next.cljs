@@ -1495,12 +1495,27 @@
   [reconciler]
   (-> reconciler :config :state))
 
+(defn- get-cache [reconciler]
+  (-> reconciler :config :history))
+
 (defn from-history
   "Given a reconciler and UUID return the application state snapshost
    from history associated with the UUID. The size of the reconciler history
    may be configured by the :history option when constructing the reconciler."
   [reconciler uuid]
-  (.get (-> reconciler :config :history) uuid))
+  (.get (get-cache reconciler) uuid))
+
+(defn get-history
+  "Return the entire application state history from beginning to end, up to
+  the size set up by the reconciler. Each state is represented as a two
+  element vector like so: [UUID state]"
+  [reconciler]
+  (.get-all (get-cache reconciler)))
+
+(defn last-state
+  "Return the last application state snapshot."
+  [reconciler]
+  (.last (get-cache reconciler)))
 
 (defn tempid
   "Return a temporary id."
